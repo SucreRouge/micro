@@ -48,16 +48,16 @@ let rec expression s g d =
     | Some l ->
       (match Token.next_token s with
          | Token.Add ->
-            let _ = Token.match_token s Add in
+            let _ = Token.match_token s Token.Add in
             add s g d l (expression s g (d+1))
          | Token.Sub ->
-            let _ = Token.match_token s Sub in
+            let _ = Token.match_token s Token.Sub in
             sub s g d l (expression s g (d+1))
          | Token.Mul ->
-            let _ = Token.match_token s Mul in
+            let _ = Token.match_token s Token.Mul in
             mul s g d l (expression s g (d+1))
          | Token.Div ->
-            let _ = Token.match_token s Div in
+            let _ = Token.match_token s Token.Div in
             div s g d l (expression s g (d+1))
          | _ -> l)
     | None -> Token.syntax_error s "literal or identifier expected"

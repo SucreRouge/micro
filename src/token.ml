@@ -19,7 +19,7 @@ type scanner = { mutable last_token: token option; stm: Charstream.stream }
 exception Syntax_error of string
 
 let syntax_error s msg =
-  raise (Syntax_error (msg ^" on line " ^ (string_of_int s.stm.line_num)))
+  raise (Syntax_error (msg ^ " on line " ^ (string_of_int s.stm.Charstream.line_num)))
 
 let rec skip_blank_chars stm =
   let c = Charstream.read_char stm in

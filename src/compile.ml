@@ -6,7 +6,7 @@ let compile file =
     Parse.parse s g;
     Charstream.close_stream s;
     Codegen.close_generator g;
-    let _ = Sys.command ("nasm -f macho " ^ g.file) in
+    let _ = Sys.command ("nasm -f macho " ^ g.Codegen.file) in
     let _ = Sys.command ("gcc -o " ^ o ^ " " ^ o ^ ".o") in
     ()
   with
