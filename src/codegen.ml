@@ -115,6 +115,11 @@ let generate_add s g d id1 id2 =
         let vi = token_var s g v in
         let _ = generate_copy s g v id1 in
         let _ = binop g "add " vi (string_of_int l2) in v
+   | (Token.Literal _, Token.Identifier i2) ->
+      let v = temp_var s g d in
+      let vi = token_var s g v in
+      let _ = generate_copy s g v id1 in
+      let _ = binop g "add " vi (var s g i2) in v
    | _ -> Token.syntax_error s "generate exp called with invalid argument"
 
 let generate_sub s g d id1 id2 =
@@ -134,4 +139,42 @@ let generate_sub s g d id1 id2 =
       let vi = token_var s g v in
       let _ = generate_copy s g v id1 in
       let _ = binop g "sub " vi (var s g i2) in v
+   | _ -> Token.syntax_error s "generate exp called with invalid argument"
+
+let generate_mul s g d id1 id2 =
+  match (id1, id2) with
+   | (Token.Identifier _, Token.Identifier i2) ->
+        let v = temp_var s g d in
+        let vi = token_var s g v in
+        let _ = generate_copy s g v id1 in
+        let _ = binop g "mul " vi (var s g i2) in v
+   | (Token.Identifier _, Token.Literal l2) ->
+        let v = temp_var s g d in
+        let vi = token_var s g v in
+        let _ = generate_copy s g v id1 in
+        let _ = binop g "mul " vi (string_of_int l2) in v
+   | (Token.Literal _, Token.Identifier i2) ->
+      let v = temp_var s g d in
+      let vi = token_var s g v in
+      let _ = generate_copy s g v id1 in
+      let _ = binop g "mul " vi (var s g i2) in v
+   | _ -> Token.syntax_error s "generate exp called with invalid argument"
+
+let generate_div s g d id1 id2 =
+  match (id1, id2) with
+   | (Token.Identifier _, Token.Identifier i2) ->
+      let v = temp_var s g d in
+      let vi = token_var s g v in
+      let _ = generate_copy s g v id1 in
+      let _ = binop g "div " vi (var s g i2) in v
+   | (Token.Identifier _, Token.Literal l2) ->
+      let v = temp_var s g d in
+      let vi = token_var s g v in
+      let _ = generate_copy s g v id1 in
+      let _ = binop g "div " vi (string_of_int l2) in v
+   | (Token.Literal _, Token.Identifier i2) ->
+      let v = temp_var s g d in
+      let vi = token_var s g v in
+      let _ = generate_copy s g v id1 in
+      let _ = binop g "div " vi (var s g i2) in v
    | _ -> Token.syntax_error s "generate exp called with invalid argument"

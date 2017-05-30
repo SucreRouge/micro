@@ -9,6 +9,8 @@ type token = Begin
            | RightParen
            | Add
            | Sub
+           | Mul
+           | Div
            | Comma
            | Semicolon
 
@@ -51,6 +53,8 @@ let scan s =
    else if Charstream.is_digit c then scan_lit (Char.escaped c)
    else if c='+' then Add
    else if c='-' then Sub
+   else if c='*' then Mul
+   else if c='/' then Div
    else if c=',' then Comma
    else if c=';' then Semicolon
    else if c='(' then LeftParen

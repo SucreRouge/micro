@@ -12,6 +12,20 @@ let sub s g d l r =
     | (Token.Literal _, Token.Identifier _) -> Codegen.generate_sub s g d l r
     | _ -> Token.syntax_error s "expected literal or identifier for sub operation"
 
+let mul s g d l r =
+  match (l, r) with
+    | (Token.Literal l1,Token.Literal l2) ->Token.Literal (l1*l2)
+    | (Token.Identifier _, Token.Literal _) -> Codegen.generate_mul s g d l r
+    | (Token.Literal _, Token.Identifier _) -> Codegen.generate_mul s g d r l
+    | _ -> Token.syntax_error s "expected literal or identifier for mul operation"
+
+let div s g d l r =
+  match (l, r) with
+    | (Token.Literal l1,Token.Literal l2) ->Token.Literal (l1/l2)
+    | (Token.Identifier _, Token.Literal _) -> Codegen.generate_div s g d l r
+    | (Token.Literal _, Token.Identifier _) -> Codegen.generate_div s g d l r
+    | _ -> Token.syntax_error s "expected literal or identifier for div operation"
+
 let rec expression s g d =
   let primary s =
     match Token.next_token s with
@@ -39,6 +53,12 @@ let rec expression s g d =
          | Token.Sub ->
             let _ = Token.match_token s Sub in
             sub s g d l (expression s g (d+1))
+         | Token.Mul ->
+            let _ = Token.match_token s Mul in
+            mul s g d l (expression s g (d+1))
+         | Token.Div ->
+            let _ = Token.match_token s Div in
+            div s g d l (expression s g (d+1))
          | _ -> l)
     | None -> Token.syntax_error s "literal or identifier expected"
 
